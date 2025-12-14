@@ -18,63 +18,75 @@ struct ContentView: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Share Feedback Button at the top
-                Button(action: {
-                    viewModel.showPopup = true
-                }) {
-                    HStack(spacing: 12) {
-                        Image(systemName: "hand.thumbsup.fill")
-                            .font(.title3)
-                        Text("Share Feedback")
-                            .font(.headline)
-                            .fontWeight(.semibold)
-                    }
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 16)
-                    .background(
-                        LinearGradient(
-                            gradient: Gradient(colors: [Color.blue, Color.blue.opacity(0.8)]),
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .cornerRadius(12)
-                    .shadow(color: Color.blue.opacity(0.3), radius: 8, x: 0, y: 4)
-                }
-                .padding(.horizontal, 24)
-                .padding(.top, 60)
-                
                 Spacer()
-                    .frame(maxHeight: 150)
                 
-                // CSAT Survey branding in the middle
+                // CSAT Survey branding in the center
                 VStack(spacing: 24) {
-                    // Chat bubble with star icon
+                    // Chat bubble with star icon and decorative dots
                     ZStack {
-                        Image(systemName: "message.fill")
-                            .font(.system(size: 100))
-                            .foregroundColor(Color.blue.opacity(0.2))
+                        // Main chat bubble
+                        RoundedRectangle(cornerRadius: 35)
+                            .fill(Color(red: 0.85, green: 0.88, blue: 0.95))
+                            .frame(width: 160, height: 160)
                         
+                        // Blue star icon
                         Image(systemName: "star.fill")
-                            .font(.system(size: 40))
-                            .foregroundColor(.blue)
-                            .offset(y: -5)
+                            .font(.system(size: 60))
+                            .foregroundColor(Color(red: 0.29, green: 0.53, blue: 0.97))
+                        
+                        // Small decorative yellow dot (top right)
+                        Circle()
+                            .fill(Color(red: 0.95, green: 0.77, blue: 0.35))
+                            .frame(width: 12, height: 12)
+                            .offset(x: 90, y: -70)
+                        
+                        // Small decorative blue dot (bottom right)
+                        Circle()
+                            .fill(Color(red: 0.85, green: 0.88, blue: 0.95))
+                            .frame(width: 10, height: 10)
+                            .offset(x: 105, y: 30)
                     }
-                    .frame(height: 120)
+                    .padding(.bottom, 8)
                     
                     VStack(spacing: 12) {
                         Text("CSAT Survey")
-                            .font(.system(size: 36, weight: .bold))
+                            .font(.system(size: 32, weight: .bold))
                             .foregroundColor(.black)
                         
-                        Text("Help us improve your experience")
-                            .font(.system(size: 18))
-                            .foregroundColor(.gray)
+                        Text("Help us improve your\nexperience")
+                            .font(.system(size: 17))
+                            .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.57))
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(2)
                     }
                 }
                 
                 Spacer()
+                
+                // Share Feedback Button at the bottom
+                VStack(spacing: 12) {
+                    Button(action: {
+                        viewModel.showPopup = true
+                    }) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "hand.thumbsup.fill")
+                                .font(.system(size: 20))
+                            Text("Share Feedback")
+                                .font(.system(size: 17, weight: .semibold))
+                        }
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 18)
+                        .background(Color(red: 0.29, green: 0.53, blue: 0.97))
+                        .cornerRadius(16)
+                    }
+                    .padding(.horizontal, 24)
+                    
+                    Text("Takes less than 2 minutes")
+                        .font(.system(size: 15))
+                        .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.57))
+                        .padding(.bottom, 40)
+                }
             }
 
             VStack {
