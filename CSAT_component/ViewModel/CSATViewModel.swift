@@ -14,8 +14,6 @@ class CSATViewModel: ObservableObject {
     @Published var selectedRating = 0
     @Published var isExpanded = false
     @Published var showThankYou = false
-    @Published var feedbackText1 = ""
-    @Published var feedbackText2 = ""
     @Published var additionalComments = ""
     @Published var selectedFeedbackOptions: Set<String> = []
     
@@ -26,8 +24,6 @@ class CSATViewModel: ObservableObject {
             self.selectedRating = 0
             self.isExpanded = false
             self.showThankYou = false
-            self.feedbackText1 = ""
-            self.feedbackText2 = ""
             self.additionalComments = ""
             self.selectedFeedbackOptions = []
         }
