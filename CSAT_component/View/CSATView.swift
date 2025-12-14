@@ -206,13 +206,13 @@ struct FeedbackButton: View {
         Button(action: action) {
             Text(text)
                 .font(.system(size: 15))
-                .foregroundColor(.black)
+                .foregroundColor(isSelected ? .white : .black)
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
                 .frame(maxWidth: .infinity)
-                .background(Color(red: 0.95, green: 0.95, blue: 0.95))
+                .background(isSelected ? Color.black : Color(red: 0.95, green: 0.95, blue: 0.95))
                 .cornerRadius(22)
         }
     }
