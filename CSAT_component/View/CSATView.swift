@@ -22,6 +22,7 @@ struct CSATPopupView: View {
                 }) {
                     Image(systemName: "xmark")
                         .foregroundColor(.gray)
+                        .font(.system(size: 18))
                         .padding()
                 }
             }
@@ -61,15 +62,24 @@ struct CSATPopupView: View {
             // STATE 1 & 2
             if !viewModel.showThankYou {
                 
-                Text("How would you rate your experience?")
-                    .font(.headline)
-                    .padding(.top, 8)
+                VStack(spacing: 4) {
+                    Text("How would you rate your experience?")
+                        .font(.system(size: 20, weight: .bold))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                    
+                    Text("We value your feedback!")
+                        .font(.system(size: 15))
+                        .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
+                        .multilineTextAlignment(.center)
+                }
+                .padding(.bottom, 12)
                 
-                HStack(spacing: 10) {
+                HStack(spacing: 8) {
                     ForEach(1...5, id: \.self) { star in
-                        Image(systemName: star <= viewModel.selectedRating ? "star.fill" : "star")
-                            .font(.title)
-                            .foregroundColor(.yellow)
+                        Image(systemName: star <= viewModel.selectedRating ? "star.fill" : "star.fill")
+                            .font(.system(size: 36))
+                            .foregroundColor(star <= viewModel.selectedRating ? Color(red: 1.0, green: 0.35, blue: 0.35) : Color(red: 0.88, green: 0.88, blue: 0.88))
                             .onTapGesture {
                                 viewModel.selectedRating = star
                                 
@@ -81,141 +91,129 @@ struct CSATPopupView: View {
                             }
                     }
                 }
-                .padding(.vertical)
+                .padding(.vertical, 16)
+                .padding(.bottom, 8)
                 
                 // STATE 2 — Expanded with text fields
                 if viewModel.isExpanded {
-                    VStack(spacing: 12) {
-                        
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("WHAT WENT WRONG?")
-                                .font(.caption)
-                                .fontWeight(.semibold)
-                                .foregroundColor(.gray)
-                                .padding(.leading, 4)
+                    ScrollView {
+                        VStack(spacing: 16) {
                             
-                            HStack(spacing: 12) {
-                                Button(action: {
-                                    viewModel.toggleFeedbackOption("Too slow")
-                                }) {
-                                    Text("Too slow")
-                                        .font(.subheadline)
-                                        .foregroundColor(viewModel.selectedFeedbackOptions.contains("Too slow") ? .white : .gray)
-                                        .padding(.horizontal, 20)
-                                        .padding(.vertical, 12)
-                                        .background(viewModel.selectedFeedbackOptions.contains("Too slow") ? Color.black : Color.white)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 25)
-                                                .stroke(viewModel.selectedFeedbackOptions.contains("Too slow") ? Color.black : Color.gray.opacity(0.3), lineWidth: 1)
-                                        )
-                                        .cornerRadius(25)
-                                }
+                            VStack(alignment: .leading, spacing: 12) {
+                                Text("WHAT WENT WRONG?")
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundColor(Color(red: 0.65, green: 0.65, blue: 0.65))
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                                    .padding(.bottom, 4)
                                 
-                                Button(action: {
-                                    viewModel.toggleFeedbackOption("Poor experience")
-                                }) {
-                                    Text("Poor experience")
-                                        .font(.subheadline)
-                                        .foregroundColor(viewModel.selectedFeedbackOptions.contains("Poor experience") ? .white : .gray)
-                                        .padding(.horizontal, 20)
-                                        .padding(.vertical, 12)
-                                        .background(viewModel.selectedFeedbackOptions.contains("Poor experience") ? Color.black : Color.white)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 25)
-                                                .stroke(viewModel.selectedFeedbackOptions.contains("Poor experience") ? Color.black : Color.gray.opacity(0.3), lineWidth: 1)
-                                        )
-                                        .cornerRadius(25)
-                                }
-                            }
-                            
-                            HStack(spacing: 12) {
-                                Button(action: {
-                                    viewModel.toggleFeedbackOption("Confusing")
-                                }) {
-                                    Text("Confusing")
-                                        .font(.subheadline)
-                                        .foregroundColor(viewModel.selectedFeedbackOptions.contains("Confusing") ? .white : .gray)
-                                        .padding(.horizontal, 20)
-                                        .padding(.vertical, 12)
-                                        .background(viewModel.selectedFeedbackOptions.contains("Confusing") ? Color.black : Color.white)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 25)
-                                                .stroke(viewModel.selectedFeedbackOptions.contains("Confusing") ? Color.black : Color.gray.opacity(0.3), lineWidth: 1)
-                                        )
-                                        .cornerRadius(25)
-                                }
-                                
-                                Button(action: {
-                                    viewModel.toggleFeedbackOption("Not helpful")
-                                }) {
-                                    Text("Not helpful")
-                                        .font(.subheadline)
-                                        .foregroundColor(viewModel.selectedFeedbackOptions.contains("Not helpful") ? .white : .gray)
-                                        .padding(.horizontal, 20)
-                                        .padding(.vertical, 12)
-                                        .background(viewModel.selectedFeedbackOptions.contains("Not helpful") ? Color.black : Color.white)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 25)
-                                                .stroke(viewModel.selectedFeedbackOptions.contains("Not helpful") ? Color.black : Color.gray.opacity(0.3), lineWidth: 1)
-                                        )
-                                        .cornerRadius(25)
-                                }
-                            }
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Additional Comments")
-                                .font(.subheadline)
-                                .foregroundColor(.primary)
-                            
-                            TextEditor(text: $viewModel.additionalComments)
-                                .frame(height: 100)
-                                .padding(4)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                                )
-                                .overlay(
-                                    Group {
-                                        if viewModel.additionalComments.isEmpty {
-                                            Text("Write your feedback...")
-                                                .foregroundColor(.gray.opacity(0.5))
-                                                .padding(.leading, 8)
-                                                .padding(.top, 12)
-                                                .allowsHitTesting(false)
+                                VStack(spacing: 10) {
+                                    HStack(spacing: 10) {
+                                        FeedbackButton(
+                                            text: "Too slow",
+                                            isSelected: viewModel.selectedFeedbackOptions.contains("Too slow")
+                                        ) {
+                                            viewModel.toggleFeedbackOption("Too slow")
                                         }
-                                    },
-                                    alignment: .topLeading
-                                )
+                                        
+                                        FeedbackButton(
+                                            text: "Poor experience",
+                                            isSelected: viewModel.selectedFeedbackOptions.contains("Poor experience")
+                                        ) {
+                                            viewModel.toggleFeedbackOption("Poor experience")
+                                        }
+                                    }
+                                    
+                                    HStack(spacing: 10) {
+                                        FeedbackButton(
+                                            text: "Confusing",
+                                            isSelected: viewModel.selectedFeedbackOptions.contains("Confusing")
+                                        ) {
+                                            viewModel.toggleFeedbackOption("Confusing")
+                                        }
+                                        
+                                        FeedbackButton(
+                                            text: "Not helpful",
+                                            isSelected: viewModel.selectedFeedbackOptions.contains("Not helpful")
+                                        ) {
+                                            viewModel.toggleFeedbackOption("Not helpful")
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Additional Comments")
+                                    .font(.system(size: 17, weight: .semibold))
+                                    .foregroundColor(.black)
+                                
+                                ZStack(alignment: .topLeading) {
+                                    TextEditor(text: $viewModel.additionalComments)
+                                        .frame(height: 140)
+                                        .padding(12)
+                                        .background(Color(red: 0.96, green: 0.96, blue: 0.96))
+                                        .cornerRadius(12)
+                                        .scrollContentBackground(.hidden)
+                                    
+                                    if viewModel.additionalComments.isEmpty {
+                                        Text("Write your feedback...")
+                                            .foregroundColor(Color(red: 0.75, green: 0.75, blue: 0.75))
+                                            .padding(.leading, 18)
+                                            .padding(.top, 20)
+                                            .allowsHitTesting(false)
+                                    }
+                                }
+                            }
+                            
+                            Button(action: {
+                                viewModel.showThankYou = true
+                            }) {
+                                Text("Submit")
+                                    .font(.system(size: 17, weight: .semibold))
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 16)
+                                    .background(Color.black)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(25)
+                            }
+                            .padding(.top, 4)
                         }
-                        
-                        Button(action: {
-                            viewModel.showThankYou = true
-                        }) {
-                            Text("Submit")
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color.black)
-                                .foregroundColor(.white)
-                                .cornerRadius(12)
-                        }
-                        .contentShape(Rectangle())
-                        .padding(.top, 8)
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 20)
                     }
-                    .padding(.horizontal)
-                    .padding(.bottom)
                 }
             }
         }
-        .frame(height: viewModel.showThankYou ? 400 : (viewModel.isExpanded ? 520 : 200))
+        .frame(height: viewModel.showThankYou ? 400 : (viewModel.isExpanded ? 620 : 220))
         .animation(.easeInOut(duration: 0.3), value: viewModel.isExpanded)
         .animation(.easeInOut(duration: 0.3), value: viewModel.showThankYou)
         .frame(maxWidth: .infinity)
         .background(Color.white)
         .cornerRadius(20)
-        .shadow(radius: 10)
-        .padding()
+        .shadow(color: Color.black.opacity(0.1), radius: 20, x: 0, y: 10)
+        .padding(.horizontal, 16)
         .offset(y: viewModel.showPopup ? 0 : 500)
         .animation(.easeOut(duration: 0.3), value: viewModel.showPopup)
+    }
+}
+
+// MARK: - Feedback Button Component
+struct FeedbackButton: View {
+    let text: String
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            Text(text)
+                .font(.system(size: 15))
+                .foregroundColor(.black)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+                .frame(maxWidth: .infinity)
+                .background(Color(red: 0.95, green: 0.95, blue: 0.95))
+                .cornerRadius(22)
+        }
     }
 }
