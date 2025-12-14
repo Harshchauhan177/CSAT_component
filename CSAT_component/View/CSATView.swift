@@ -87,11 +87,81 @@ struct CSATPopupView: View {
                 if viewModel.isExpanded {
                     VStack(spacing: 12) {
                         
-                        TextField("What did you like most?", text: $viewModel.feedbackText1)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                        
-                        TextField("What could be improved?", text: $viewModel.feedbackText2)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("WHAT WENT WRONG?")
+                                .font(.caption)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.gray)
+                                .padding(.leading, 4)
+                            
+                            HStack(spacing: 12) {
+                                Button(action: {
+                                    viewModel.toggleFeedbackOption("Too slow")
+                                }) {
+                                    Text("Too slow")
+                                        .font(.subheadline)
+                                        .foregroundColor(viewModel.selectedFeedbackOptions.contains("Too slow") ? .white : .gray)
+                                        .padding(.horizontal, 20)
+                                        .padding(.vertical, 12)
+                                        .background(viewModel.selectedFeedbackOptions.contains("Too slow") ? Color.black : Color.white)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 25)
+                                                .stroke(viewModel.selectedFeedbackOptions.contains("Too slow") ? Color.black : Color.gray.opacity(0.3), lineWidth: 1)
+                                        )
+                                        .cornerRadius(25)
+                                }
+                                
+                                Button(action: {
+                                    viewModel.toggleFeedbackOption("Poor experience")
+                                }) {
+                                    Text("Poor experience")
+                                        .font(.subheadline)
+                                        .foregroundColor(viewModel.selectedFeedbackOptions.contains("Poor experience") ? .white : .gray)
+                                        .padding(.horizontal, 20)
+                                        .padding(.vertical, 12)
+                                        .background(viewModel.selectedFeedbackOptions.contains("Poor experience") ? Color.black : Color.white)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 25)
+                                                .stroke(viewModel.selectedFeedbackOptions.contains("Poor experience") ? Color.black : Color.gray.opacity(0.3), lineWidth: 1)
+                                        )
+                                        .cornerRadius(25)
+                                }
+                            }
+                            
+                            HStack(spacing: 12) {
+                                Button(action: {
+                                    viewModel.toggleFeedbackOption("Confusing")
+                                }) {
+                                    Text("Confusing")
+                                        .font(.subheadline)
+                                        .foregroundColor(viewModel.selectedFeedbackOptions.contains("Confusing") ? .white : .gray)
+                                        .padding(.horizontal, 20)
+                                        .padding(.vertical, 12)
+                                        .background(viewModel.selectedFeedbackOptions.contains("Confusing") ? Color.black : Color.white)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 25)
+                                                .stroke(viewModel.selectedFeedbackOptions.contains("Confusing") ? Color.black : Color.gray.opacity(0.3), lineWidth: 1)
+                                        )
+                                        .cornerRadius(25)
+                                }
+                                
+                                Button(action: {
+                                    viewModel.toggleFeedbackOption("Not helpful")
+                                }) {
+                                    Text("Not helpful")
+                                        .font(.subheadline)
+                                        .foregroundColor(viewModel.selectedFeedbackOptions.contains("Not helpful") ? .white : .gray)
+                                        .padding(.horizontal, 20)
+                                        .padding(.vertical, 12)
+                                        .background(viewModel.selectedFeedbackOptions.contains("Not helpful") ? Color.black : Color.white)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 25)
+                                                .stroke(viewModel.selectedFeedbackOptions.contains("Not helpful") ? Color.black : Color.gray.opacity(0.3), lineWidth: 1)
+                                        )
+                                        .cornerRadius(25)
+                                }
+                            }
+                        }
                         
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Additional Comments")
