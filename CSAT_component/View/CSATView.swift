@@ -49,10 +49,18 @@ struct CSATPopupView: View {
                     
                     Spacer()
                     
-                    Button("bad experience") {
+                    Button(action: {
                         viewModel.closePopup()
+                    }) {
+                        Text("bad experience")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(Color.black)
+                            .cornerRadius(25)
                     }
-                    .foregroundColor(.blue)
+                    .padding(.horizontal, 20)
                     .padding(.bottom)
                 }
                 .padding()
