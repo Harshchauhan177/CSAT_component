@@ -14,4 +14,20 @@ class CSATViewModel: ObservableObject {
     @Published var selectedRating = 0
     @Published var isExpanded = false
     @Published var showThankYou = false
+    @Published var feedbackText1 = ""
+    @Published var feedbackText2 = ""
+    @Published var additionalComments = ""
+    
+    func closePopup() {
+        showPopup = false
+        // Reset after animation
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.selectedRating = 0
+            self.isExpanded = false
+            self.showThankYou = false
+            self.feedbackText1 = ""
+            self.feedbackText2 = ""
+            self.additionalComments = ""
+        }
+    }
 }

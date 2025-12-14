@@ -12,26 +12,50 @@ struct CSATPopupView: View {
     @ObservedObject var viewModel: CSATViewModel
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
+            
+            // Close Button (X)
+            HStack {
+                Spacer()
+                Button(action: {
+                    viewModel.closePopup()
+                }) {
+                    Image(systemName: "xmark")
+                        .foregroundColor(.gray)
+                        .padding()
+                }
+            }
             
             // STATE 3 — THANK YOU
             if viewModel.showThankYou {
                 VStack(spacing: 16) {
                     
-                    Image(systemName: "hand.thumbsup.fill")
+                    Image(systemName: "swift")
                         .resizable()
-                        .frame(width: 60, height: 60)
-                        .foregroundColor(.green)
+                        .scaledToFit()
+                        .frame(width: 80, height: 80)
+                        .foregroundColor(.orange)
                     
-                    Text("Thank You!")
-                        .font(.title)
+                    Text("Thank You for your feedback!")
+                        .font(.title2)
                         .bold()
+                        .multilineTextAlignment(.center)
                     
-                    Text("We appreciate your feedback.")
+                    Text("Your insight will help us improve")
                         .font(.subheadline)
                         .foregroundColor(.gray)
+                        .multilineTextAlignment(.center)
+                    
+                    Spacer()
+                    
+                    Button("bad experience") {
+                        viewModel.closePopup()
+                    }
+                    .foregroundColor(.blue)
+                    .padding(.bottom)
                 }
                 .padding()
+                .frame(height: 300)
             }
             
             // STATE 1 & 2
@@ -39,7 +63,7 @@ struct CSATPopupView: View {
                 
                 Text("How would you rate your experience?")
                     .font(.headline)
-                    .padding(.top)
+                    .padding(.top, 8)
                 
                 HStack(spacing: 10) {
                     ForEach(1...5, id: \.self) { star in
@@ -59,36 +83,69 @@ struct CSATPopupView: View {
                 }
                 .padding(.vertical)
                 
+                // STATE 2 — Expanded with text fields
                 if viewModel.isExpanded {
                     VStack(spacing: 12) {
                         
-                        Text("Additional Comments")
-                            .font(.subheadline)
-                        
-                        TextField("Write your feedback...", text: .constant(""))
+                        TextField("What did you like most?", text: $viewModel.feedbackText1)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                         
-                        Button("Submit") {
-                            viewModel.showThankYou = true
+                        TextField("What could be improved?", text: $viewModel.feedbackText2)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Additional Comments")
+                                .font(.subheadline)
+                                .foregroundColor(.primary)
+                            
+                            TextEditor(text: $viewModel.additionalComments)
+                                .frame(height: 100)
+                                .padding(4)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                                )
+                                .overlay(
+                                    Group {
+                                        if viewModel.additionalComments.isEmpty {
+                                            Text("Write your feedback...")
+                                                .foregroundColor(.gray.opacity(0.5))
+                                                .padding(.leading, 8)
+                                                .padding(.top, 12)
+                                                .allowsHitTesting(false)
+                                        }
+                                    },
+                                    alignment: .topLeading
+                                )
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.black)
-                        .foregroundColor(.white)
-                        .cornerRadius(12)
-                        .padding(.top)
+                        
+                        Button(action: {
+                            viewModel.showThankYou = true
+                        }) {
+                            Text("Submit")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.black)
+                                .foregroundColor(.white)
+                                .cornerRadius(12)
+                        }
+                        .contentShape(Rectangle())
+                        .padding(.top, 8)
                     }
                     .padding(.horizontal)
+                    .padding(.bottom)
                 }
             }
         }
-        .frame(height: viewModel.showThankYou ? 260 : (viewModel.isExpanded ? 380 : 200))
+        .frame(height: viewModel.showThankYou ? 400 : (viewModel.isExpanded ? 520 : 200))
         .animation(.easeInOut(duration: 0.3), value: viewModel.isExpanded)
+        .animation(.easeInOut(duration: 0.3), value: viewModel.showThankYou)
         .frame(maxWidth: .infinity)
-        .background(Color.gray.opacity(0.2))
+        .background(Color.white)
         .cornerRadius(20)
+        .shadow(radius: 10)
         .padding()
-        .offset(y: viewModel.showPopup ? 0 : 300)
+        .offset(y: viewModel.showPopup ? 0 : 500)
         .animation(.easeOut(duration: 0.3), value: viewModel.showPopup)
     }
 }
