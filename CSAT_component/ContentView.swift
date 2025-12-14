@@ -8,14 +8,30 @@
 import SwiftUI
 
 struct ContentView: View {
+
+    @StateObject private var viewModel = CSATViewModel()
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ZStack {
+
+            Color.white
+                .ignoresSafeArea()
+
+            VStack {
+                Button("Show CSAT Popup") {
+                    viewModel.showPopup = true
+                }
+                .padding()
+
+                Spacer()
+            }
+
+            VStack {
+                Spacer()
+
+                CSATPopupView(viewModel: viewModel)
+            }
         }
-        .padding()
     }
 }
 
